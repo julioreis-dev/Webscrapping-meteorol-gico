@@ -24,17 +24,18 @@ def extrair_dados(*args):
         y = items[n].find(title='Temperatura máxima').get_text()
         lista_max.append(y)
         k = funcoes.filtrar(w, z, y, x)
-        g = concatenar(w, z, y, k)
+        g = concatenar(w, z, y, x, k)
         lista_rel.append(g)
     return lista_sema, lista_cond, lista_max, lista_min, lista_rel
 
 
 def concatenar(*args):
-    return f'{args[0][0].next_element} - Tem previsão de {[args[4]]} temperatura variando entre a máxima de {args[2]} graus e a mínima de {args[3]} graus.'
+    return f'{args[0][0].next_element} - Tem previsão de {args[4]} temperatura variando ' \
+           f'entre a máxima de {args[2]} graus e a mínima de {args[3]} graus.'
 
 
-lista_cidades = [('rj', 'Rio de Janeiro'), ('es', 'Espirito Santo'),
-                 ('rj', 'Macaé'), ('sc', 'Itajaí'), ('rj', 'Niteroi')]
+lista_cidades = [('rj', 'Rio de Janeiro'), ('es', 'Espirito Santo'), ('sp', 'Santos'),
+                 ('rj', 'Macaé'), ('sc', 'Itajaí'), ('rj', 'Niteroi'), ('se', 'Aracaju'), ('rn', 'Natal')]
 for relacao in lista_cidades:
     abreviatura = relacao[0]
     city = relacao[1]
@@ -57,4 +58,3 @@ for relacao in lista_cidades:
         print('Erro no servidor')
         exit()
 print('Relatório finalizado com sucesso!!!')
-
