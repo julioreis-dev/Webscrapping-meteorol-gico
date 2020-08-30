@@ -1,6 +1,7 @@
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+import funcoes
 
 
 def extrair_dados(*args):
@@ -22,18 +23,14 @@ def extrair_dados(*args):
         lista_min.append(x)
         y = items[n].find(title='Temperatura máxima').get_text()
         lista_max.append(y)
-        k = analisar(w, z, y, x)
-        lista_rel.append(k)
+        k = funcoes.filtrar(w, z, y, x)
+        g = concatenar(w, z, y, k)
+        lista_rel.append(g)
     return lista_sema, lista_cond, lista_max, lista_min, lista_rel
 
 
-def analisar(*args):
-    dict_resultados = {'Predomínio de Sol': 'altas temperaturas e sol o dia inteiro e',
-                       'Possibilidade de Chuva': 'pancadas de chuvas durante o dia e a noite e',
-                       'Chuvas Isoladas': 'possibilidade de chuvas moderadas a fortes em diversas cidades do estado e',
-                       'Variação de Nebulosidade': 'forte nebulosidade em partes da cidade com possibilidade de chuvas e',
-                       'Parcialmente Nublado': 'céu encoberto durante algumas horas do dia com baixa possibilidade de chuvas e', }
-    return f'{args[0][0].next_element} - Tem previsão de {dict_resultados[args[1]]} temperatura variando entre a máxima de {args[2]} graus e a mínima de {args[3]} graus.'
+def concatenar(*args):
+    return f'{args[0][0].next_element} - Tem previsão de {[args[4]]} temperatura variando entre a máxima de {args[2]} graus e a mínima de {args[3]} graus.'
 
 
 lista_cidades = [('rj', 'Rio de Janeiro'), ('es', 'Espirito Santo'),
