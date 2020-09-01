@@ -2,6 +2,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 import funcoes
+import openpyxl
 
 
 def extrair_dados(*args):
@@ -14,7 +15,7 @@ def extrair_dados(*args):
     lista_max = []
     lista_min = []
     lista_rel = []
-    for n in range(0, 6):
+    for n in range(0, 5):
         w = items[n].find_all('h5')
         lista_sema.append(w[0].next_element)
         z = items[n].find(class_='align-bottom').get_text()
@@ -30,12 +31,12 @@ def extrair_dados(*args):
 
 
 def concatenar(*args):
-    return f'{args[0][0].next_element} - Tem previsão de {args[4]} temperatura variando ' \
+    return f'{args[0][0].next_element} - Tem previsão de {args[4]} termometro variando ' \
            f'entre a máxima de {args[2]} graus e a mínima de {args[3]} graus.'
 
 
-lista_cidades = [('rj', 'Rio de Janeiro'), ('es', 'Espirito Santo'), ('sp', 'Santos'),
-                 ('rj', 'Macaé'), ('sc', 'Itajaí'), ('rj', 'Niteroi'), ('se', 'Aracaju'), ('rn', 'Natal')]
+lista_cidades = [('rj', 'Rio de Janeiro'), ('es', 'Espirito Santo'), ('sp', 'Santos'), ('ba', 'Taquipe'),
+                 ('rj', 'Macaé'), ('sc', 'Itajaí'), ('se', 'Aracaju'), ('rn', 'Natal'), ('rn', 'Mossoró')]
 for relacao in lista_cidades:
     abreviatura = relacao[0]
     city = relacao[1]
@@ -54,6 +55,9 @@ for relacao in lista_cidades:
         print(f'Previsão meteorológica da Cidade: {city} - {abreviatura.upper()}.')
         print(wheather_statitics)
         print('')
+        writer = pd.ExcelWriter(f'D:\pythonProject\scrapping\previsao_{city}.xlsx')
+        wheather_statitics.to_excel(writer, city, index=False)
+        writer.save()
     else:
         print('Erro no servidor')
         exit()
